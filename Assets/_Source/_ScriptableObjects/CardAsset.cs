@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace _ScriptableObjects
 {
-    [CreateAssetMenu(fileName = "Data", menuName="SO/CardAsset")]
+    [CreateAssetMenu(fileName = "Data", menuName = "SO/CardAsset", order = 1)]
     public class CardAsset : ScriptableObject
     {
         public string cardName;

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using _ScriptableObjects;
 using Models;
+using Unity.VisualScripting;
 using UnityEngine;
 using Views;
 
@@ -10,9 +12,9 @@ namespace Core
     {
         private static CardGame _instance;
         private Dictionary<CardInstance, CardView> _cards = new();
-        [SerializeField]private List<CardAsset> cardAssets = new();
-        [SerializeField]private GameObject cardPrefab;
-        [SerializeField]private List<int> _layouts = new();
+        [SerializeField] private List<CardAsset> cardAssets = new();
+        [SerializeField] private GameObject cardPrefab;
+        [SerializeField] private List<int> _layouts = new();
 
         public static CardGame Instance
         {
@@ -53,13 +55,26 @@ namespace Core
             cardView.Init(cardInstance);
             _cards[cardInstance] = cardView;
         }
-        
+
 
         private void CreateCard(CardAsset cardAsset, int layoutId)
         {
             var cardInstance = new CardInstance(cardAsset);
             CreateCardView(cardInstance);
             cardInstance.MoveToLayout(layoutId);
+        }
+
+        public List<CardInstance> GetCardsInLayout(int layoutId)
+        {
+            return _cards
+                .Select(x => x.Key)
+                .Where(x => x.LayoutId == layoutId)
+                .ToList();
+        }
+        
+        public CardView GetCardView(CardInstance cardInstance)
+        {
+            return _cards[cardInstance];
         }
     }
 }

@@ -1,22 +1,22 @@
 ﻿using _ScriptableObjects;
+using Core;
 
 namespace Models
 {
     public class CardInstance
     {
-        private CardAsset _cardAsset;
+        public CardAsset CardAsset { get; }
         public int LayoutId;
         public int CardPosition;
         public CardInstance(CardAsset cardAsset)
         {
-            _cardAsset = cardAsset;
+            CardAsset = cardAsset;
         }
 
         public void MoveToLayout(int layoutId)
         {
             LayoutId = layoutId;
-            //как ставить позицию
-            CardPosition = 0;
+            CardPosition = CardGame.Instance.GetCardsInLayout(layoutId).Count;
         }
     }
 }
