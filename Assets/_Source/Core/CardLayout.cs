@@ -1,48 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
-using Core;
 using Models;
 using UnityEngine;
-using UnityEngine.TextCore;
 using Views;
 
-public class CardLayout : MonoBehaviour
+namespace Core
 {
-    [SerializeField]public int LayoutId;
-    [SerializeField]public Vector2 Offsеt;
-    private bool _faceUp;
+    public class CardLayout : MonoBehaviour
+    {
+        [SerializeField]public int LayoutId;
+        [SerializeField]public Vector2 Offsеt;
+        [SerializeField]private bool faceUp;
 
 
-    private CardView GetCardView(CardInstance cardInstance)
-    {
-        return CardGame.Instance.GetCardView(cardInstance);
-    }
-
-    private Vector2 GetCardPosition(CardInstance cardInstance)
-    {
-        var rectTransform = GetComponent<RectTransform>().rect;
-        var widthMove = rectTransform.width / 2;
-        var heightMove = rectTransform.height / 2;
-        var absolutePos = cardInstance.CardPosition * Offsеt;
-        return new Vector2(absolutePos.x - widthMove, absolutePos.y - heightMove);
-    }
-    void Update()
-    {
-        var cardInstances = CardGame.Instance.GetCardsInLayout(LayoutId);
-        foreach (var cardInstance in cardInstances)
+        private CardView GetCardView(CardInstance cardInstance)
         {
-            var cardView = GetCardView(cardInstance);
-            Transform cardViewTransform = cardView.transform;
-            cardViewTransform.SetParent(transform);
-            cardViewTransform.localPosition = GetCardPosition(cardInstance);
-            Rotate(false, cardView);
+            return CardGame.Instance.GetCardView(cardInstance);
         }
-        
-    }
 
-    private void Rotate(bool up, CardView cardView)
-    {
-        _faceUp = up;
-        cardView.Rotate(up);
+        private Vector2 GetCardPosition(CardInstance cardInstance)
+        {
+            var rect = GetComponent<RectTransform>().rect;
+            var widthMove = rect.width / 2;
+            var absolutePos = cardInstance.CardPosition * Offsеt;
+            return new Vector2(absolutePos.x - widthMove, absolutePos.y);
+        }
+        void Update()
+        {
+            var cardInstances = CardGame.Instance.GetCardsInLayout(LayoutId);
+            foreach (var cardInstance in cardInstances)
+            {
+                var cardView = GetCardView(cardInstance);
+                Transform cardViewTransform = cardView.transform;
+                cardViewTransform.SetParent(transform);
+                cardViewTransform.localPosition = GetCardPosition(cardInstance);
+                cardViewTransform.SetSiblingIndex(cardInstance.CardPosition);
+                Rotate(faceUp, cardView);
+            }
+        
+        }
+
+        private void Rotate(bool up, CardView cardView)
+        {
+            cardView.Rotate(up);
+        }
     }
 }

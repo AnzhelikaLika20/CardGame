@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5615670ce331048af0ad2a2ebd909d, type: 3}
   m_Name: BackCard
   m_EditorClassIdentifier: 
-  cardName: 
-  cardColor: {r: 0, g: 0, b: 0, a: 0}
-  cardImage: {fileID: 21300000, guid: d5c6b8a56508d0b4ab09e4d60e3f766d, type: 3}
+  cardName: Back
+  cardColor: {r: 1, g: 1, b: 1, a: 1}
+  cardImage: {fileID: 21300000, guid: a224d600afe9dcd41a980da2328b6f9e, type: 3}

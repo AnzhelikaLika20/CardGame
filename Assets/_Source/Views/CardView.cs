@@ -1,19 +1,21 @@
 ﻿using Models;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Views
 {
-    public class CardView : MonoBehaviour
+    public class CardView : MonoBehaviour, IPointerDownHandler
     {
         private CardInstance _cardInstance;
 
-        [SerializeField] GameObject _cardBack;
-        [SerializeField] GameObject _cardFront;
+        [SerializeField] GameObject cardBack;
+        [SerializeField] private GameObject cardFront;
+        [SerializeField]private int fieldLayout;
         public void Init(CardInstance cardInstance)
         {
             _cardInstance = cardInstance;
-            var image = _cardFront.GetComponent<Image>();
+            var image = cardFront.GetComponent<Image>();
             image.color = _cardInstance.CardAsset.cardColor;
             image.sprite = _cardInstance.CardAsset.cardImage;
             image.name = _cardInstance.CardAsset.cardName;
@@ -21,8 +23,18 @@ namespace Views
 
         public void Rotate(bool up)
         {
-            _cardBack.SetActive(!up);
-            _cardFront.SetActive(up);
+            cardBack.SetActive(!up);
+            cardFront.SetActive(up);
+        }
+
+        private void PlayCard()
+        {
+            _cardInstance.MoveToLayout(fieldLayout);
+        }
+
+        public void OnPointerDown(PointerEventData eventData)
+        {
+            PlayCard();
         }
     }
 }

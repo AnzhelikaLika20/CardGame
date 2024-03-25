@@ -15,8 +15,11 @@ namespace Models
 
         public void MoveToLayout(int layoutId)
         {
+            var oldLayout = LayoutId;
             LayoutId = layoutId;
             CardPosition = CardGame.Instance.GetCardsInLayout(layoutId).Count;
+            CardGame.Instance.RecalculateLayout(layoutId);
+            CardGame.Instance.RecalculateLayout(oldLayout);
         }
     }
 }
