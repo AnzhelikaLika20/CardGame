@@ -15,24 +15,18 @@ namespace Core
         {
             return CardGame.Instance.GetCardView(cardInstance);
         }
-
-        private Vector2 GetCardPosition(CardInstance cardInstance)
-        {
-            var rect = GetComponent<RectTransform>().rect;
-            var widthMove = rect.width / 2;
-            var absolutePos = cardInstance.CardPosition * Offsеt;
-            return new Vector2(absolutePos.x - widthMove, absolutePos.y);
-        }
+        
         void Update()
         {
             var cardInstances = CardGame.Instance.GetCardsInLayout(LayoutId);
             foreach (var cardInstance in cardInstances)
             {
                 var cardView = GetCardView(cardInstance);
-                Transform cardViewTransform = cardView.transform;
-                cardViewTransform.SetParent(transform);
-                cardViewTransform.localPosition = GetCardPosition(cardInstance);
-                cardViewTransform.SetSiblingIndex(cardInstance.CardPosition);
+                var cardTransform = (RectTransform)(cardView.transform);
+                cardTransform.SetParent(transform, false);
+                var vector = (cardInstance.CardPosition - 1) * Offsеt;
+                cardTransform.anchoredPosition = vector;
+                cardTransform.SetSiblingIndex(cardInstance.CardPosition);
                 Rotate(faceUp, cardView);
             }
         
